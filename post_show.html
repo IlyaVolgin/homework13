@@ -1,0 +1,43 @@
+<div class="row g-4">
+    {% for post in posts %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                {% if edit %}
+                <div class="card-header {% if post.is_published %}bg-success{% else %}bg-warning{% endif %} text-white">
+                    <a href="{% url 'blog:edit_post' post.id %}" class="btn btn-sm btn-outline-light">Редагувати</a>
+                        <a href="{% url 'blog:delete_post' post.id %}" class="btn btn-sm btn-outline-light">Видалити</a>
+                </div>
+                {% endif %}
+                {% include 'blog/_include_blocks/_card_post.html' with post=post %}
+            </div>
+        </div>
+
+        {% if edit %}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Створити пост</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'blog:create' %}" method="post" enctype="multipart/form-data">
+
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        {{ form_create_post }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Створити</button>
+                        
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% endfor %}
+
+
+</div>
